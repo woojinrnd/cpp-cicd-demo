@@ -1,5 +1,5 @@
 name: Build and Test C++
-   
+
 on:
   push:
     branches: [ master ]
@@ -17,7 +17,13 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y cmake g++ ninja-build
 
     - name: Create Build Directory
-      run: mkdir build && cd build && cmake .. -G Ninja && ninja
+      run: mkdir build
+
+    - name: Run CMake
+      run: cmake -S . -B build -G Ninja
+
+    - name: Build Project
+      run: cmake --build build
 
     - name: Run Unit Tests
-      run: cd build && ctest --output-on-failure
+      run: ctest --test-dir build --output-on-failure
